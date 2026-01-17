@@ -8,10 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # Updated to v4
+      - uses: actions/checkout@v4
 
       - name: Install Java
-        uses: actions/setup-java@v4 # Updated to v4
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -21,6 +21,10 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Create Platform Files
+        # This command generates the android/ folder that is missing
+        run: flutter create . --overwrite --platforms android
+
       - name: Get Dependencies
         run: flutter pub get
 
@@ -28,7 +32,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4 # This fixes the error
+        uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
