@@ -1,5 +1,5 @@
-name: TODO ni Mark
-description: A minimalist productivity app for nursing and dev students.
+name: my_todo_app
+description: TODO no mark - A minimalist, feature-rich todo app.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.2
-  google_fonts: ^6.1.0 # For that minimalist, premium typography
+  google_fonts: ^5.1.0 # Downgraded to fix 'FontFeature' error in tests
   intl: ^0.19.0        # For date formatting
 
 dev_dependencies:

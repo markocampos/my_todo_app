@@ -1,4 +1,4 @@
-name: Build Flutter APK
+name: Build and Deploy Pulse Web
 
 on:
   push:
@@ -22,17 +22,26 @@ jobs:
           channel: 'stable'
 
       - name: Create Platform Files
-        # This command generates the android/ folder that is missing
-        run: flutter create . --overwrite --platforms android
+        run: flutter create . --overwrite --platforms web,android
 
-      - name: Get Dependencies
-        run: flutter pub get
+      - name: Build Web
+        run: flutter build web --release --base-href /my_todo_app/
 
-      - name: Build APK
-        run: flutter build apk --release
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Upload Web Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/web
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
